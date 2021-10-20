@@ -1,38 +1,317 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-100: #005db2;
+  --primary-80: #007aff;
+  --primary-60: #339dff;
+  --primary-40: #5da6e3;
+  --primary-20: #a0d7ff;
+  --primary-0: #cde3f5;
+
+  --mono-100: #17181a;
+  --mono-80: #303136;
+  --mono-60: #51535c;
+  --mono-40: #727582;
+  --mono-20: #9397a8;
+  --mono-0: #ffffff;
+  
+  --mono-100-100: #17181aff;
+  --mono-100-50: #17181a99;
+  --mono-0-100: #ffffffff;
+  --mono-0-50: #ffffff50;
+  
+  --text-expression-number-fg: var(--mono-40);
+  --text-expression-operator-fg: var(--primary-80);
+  --text-result-number-fg: var(--mono-80);
+
+  /* --button-number-bg: var(--primary-0); */
+  --button-number-bg: rgba(205, 227, 245, 0.3);
+  --button-number-bd: var(--mono-0);
+  --button-number-fg: var(--mono-0);
+  --button-control-bg: rgba(205, 227, 245, 0.3);
+  --button-control-bd: var(--mono-0);
+  --button-control-fg: var(--primary-40);
+  --button-operator-bg: var(--primary-20);
+  --button-operator-bd: var(--mono-0);
+  --button-operator-fg: var(--primary-40);
+  --button-equals-bg: var(--primary-60);
+  --button-equals-bd: var(--button-equals-bg);
+  --button-equals-fg: var(--mono-0);
+  --calculator-bg-100: var(--mono-0-100);
+  --calculator-bg-50: var(--mono-0-50);
+}
+
+body {
+  overflow: hidden
+}
+
+body button{
+  text-align: center;
+  font-weight: 700;
+}
+
+.app {
+  background-color: #A0D7FF;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Poppins;
+}
+
+.backdrop{
+  color: var(--primary-100);
+  /* color: radial-gradient(circle at center, var(--primary-100) 15%,#0961A3); */
+  position: absolute;
+  width: 600px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-areas:
+  " e   mu sin deg"
+  "ac bksp div mul"
+  "n7   n8  n9 min"
+  "n4   n5  n6 add"
+  "n1   n2  n3 add"
+  "n1   n2  n3  eq"
+  "n0   n0  dot eq";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1.8fr 3fr 3fr 3fr 1fr 1fr 3fr;
+  grid-gap: 16px;
+}
+
+.buttons button{
+  min-width: 48px;
+  min-height: calc(48px / 3 * 1.8);
+  border-radius: 12px;
+  border-width: 0;
+  font-size: 16pt;
+  font-family: inherit;
+  backdrop-filter: opacity(50%) blur( 10px );
+  -webkit-backdrop-filter: blur( 10px );
+}
+
+.shadow-and-border {
+  -webkit-box-shadow:  
+  inset 0.5px 0.5px 0.5px #fff, 
+  inset 0.5px -0.5px 0.5px #ffffffBF, 
+  inset -0.5px 0.5px 0.5px #ffffffBF, 
+  inset -0.5px -0.5px 0.5px #ffffff80,
+  inset 2px 2px 10px #fff, 
+  inset -2px -2px 10px #ffffff80;
+  -moz-box-shadow:  
+  inset 0.5px 0.5px 0.5px #fff, 
+  inset 0.5px -0.5px 0.5px #ffffffBF, 
+  inset -0.5px 0.5px 0.5px #ffffffBF, 
+  inset -0.5px -0.5px 0.5px #ffffff80,
+  inset 2px 2px 10px #fff, 
+  inset -2px -2px 10px #ffffff80;
+  box-shadow:  
+  inset 0.5px 0.5px 0.5px #fff, 
+  inset 0.5px -0.5px 0.5px #ffffffBF, 
+  inset -0.5px 0.5px 0.5px #ffffffBF, 
+  inset -0.5px -0.5px 0.5px #ffffff80,
+  inset 2px 2px 10px #fff, 
+  inset -2px -2px 10px #ffffff80;
+}
+
+.border {
+  -webkit-box-shadow:  
+  inset 0.5px 0.5px 0.5px #fff, 
+  inset 0.5px -0.5px 0.5px #ffffffBF, 
+  inset -0.5px 0.5px 0.5px #ffffffBF, 
+  inset -0.5px -0.5px 0.5px #ffffff80; 
+  -moz-box-shadow:  
+  inset 0.5px 0.5px 0.5px #fff, 
+  inset 0.5px -0.5px 0.5px #ffffffBF, 
+  inset -0.5px 0.5px 0.5px #ffffffBF, 
+  inset -0.5px -0.5px 0.5px #ffffff80; 
+  box-shadow:  
+  inset 0.5px 0.5px 0.5px #fff, 
+  inset 0.5px -0.5px 0.5px #ffffffBF, 
+  inset -0.5px 0.5px 0.5px #ffffffBF, 
+  inset -0.5px -0.5px 0.5px #ffffff80;
+}
+
+.buttons {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.buttons button:hover{
+  filter: hue-rotate(5deg) saturate(85%) brightness(105%);
+}
+
+.buttons button:active{
+  filter: hue-rotate(10deg) saturate(80%) brightness(110%);
+}
+
+.buttons button.button-number {
+  background-color: var(--button-number-bg);
+  color: var(--button-number-fg);
+  border-color: var(--button-number-bd);
+  font-weight: 500;
+
+}
+
+.buttons button.button-special {
+  background-color: var(--button-number-bg);
+  color: var(--button-number-fg);
+  border-color: var(--button-number-bd);
+  font-size: 10pt;
+  font-weight: 400;
+}
+
+.buttons button.button-operator {
+  background-color: var(--button-operator-bg);
+  color: var(--button-operator-fg);
+  border-color: var(--button-operator-bd);
+  font-weight: 500;
+}
+
+.buttons button.button-control {
+  background-color: var(--button-control-bg);
+  color: var(--button-control-fg);
+  border-color: var(--button-control-bd);
+  font-weight: 500;
+
+}
+
+.buttons button.button-equals {
+  background-color: var(--button-equals-bg);
+  color: var(--button-equals-fg);
+  border-color: var(--button-equals-bd);
+  font-weight: 500;
+
+}
+
+.button-e   { grid-area:   e;}
+.button-mu  { grid-area:  mu;}
+.button-sin { grid-area: sin;}
+.button-deg { grid-area: deg;}
+.button-ac  { grid-area:  ac;}
+.button-bksp{ grid-area:bksp;}
+.button-div { grid-area: div;}
+.button-mul { grid-area: mul;}
+.button-min { grid-area: min;}
+.button-eq  { grid-area:  eq;}
+.button-add { grid-area: add;}
+.button-n0  { grid-area:  n0;}
+.button-n1  { grid-area:  n1;}
+.button-n2  { grid-area:  n2;}
+.button-n3  { grid-area:  n3;}
+.button-n4  { grid-area:  n4;}
+.button-n5  { grid-area:  n5;}
+.button-n6  { grid-area:  n6;}
+.button-n7  { grid-area:  n7;}
+.button-n8  { grid-area:  n8;}
+.button-n9  { grid-area:  n9;}
+.button-dot { grid-area: dot;}
+
+header {
+  margin-top: 72px;
+  margin-bottom: 64px;
+  width: 100%;
+}
+
+.ellipsis {
+  overflow: hidden;
+  direction: rtl;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.text-expression {
+  color:var(--text-expression-number-fg);
+  font-size: 14pt;
+  font-weight: 400;
+}
+
+.text-expression-operator {
+  color:var(--text-expression-operator-fg);
+}
+
+
+.text-result {
+  color: var(--text-result-number-fg);
+  font-size: 28pt;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.text-result-onenter {
+  color:var(--text-expression-number-fg);
+  font-size: 14pt;
+  transform: translateY(-37px);
+  transition: 500ms;
+}
+
+.window {
+  background: radial-gradient(circle at top left, var(--calculator-bg-100) 5%, var(--calculator-bg-50) 75%);
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 10px );
+  -webkit-backdrop-filter: blur( 10px );
+  border-radius: 30px;
+  padding: 36px 32px;
+  z-index: 1;
+  max-width: calc( 4 * 48px + 3 * 16px);
+  overflow: hidden;
+}
+
+.window-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #00000000;
+  color: var(--button-number-fg);
+  border-radius: 60px;
+  font-size: 20px;
+  border: 5px;
+  height: 40px;
+  width: 40px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.window-controls:hover {
+  background-color: #00000015 ;
+  color: var(--button-control-fg);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --text-expression-number-fg: var(--mono-40);
+    --text-expression-operator-fg: var(--primary-80);
+    --text-result-number-fg: var(--mono-0);
+
+    --button-number-bg: rgba(48, 49, 54, 0);
+    --button-number-bd: var(--button-number-bg);
+    --button-number-fg: var(--primary-60);
+    --button-control-bg: rgba(114, 117, 130, 0.5);
+    --button-control-bd: var(--button-control-bg);
+    --button-control-fg: var(--mono-20);
+    --button-operator-bg: rgba(0, 93, 178, 0.75);
+    --button-operator-bd: var(--button-operator-bg);
+    --button-operator-fg: var(--primary-60);
+    --button-equals-bg: var(--primary-60);
+    --button-equals-bd: var(--button-equals-bg);
+    --button-equals-fg: var(--mono-0);
+    --calculator-bg-100: var(--mono-100-100);
+    --calculator-bg-50: var(--mono-100-50);
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  .shadow-and-border {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
   }
-  to {
-    transform: rotate(360deg);
+  .border {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
   }
 }

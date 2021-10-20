@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useReducer } from 'react';
 import './App.css';
+import Backdrop from './components/Backdrop';
+import CalculatorButtons from './components/CalculatorButtons';
+import CalculatorDisplay from './components/CalculatorDisplay';
+import CalculatorWindow from './components/CalculatorWindow';
+import { reducer } from './state';
+import { NumStr, OpStr } from './types';
 
-function App() {
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, { expression: '', result: null, onEvaluated: false, })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Backdrop/>
+      <CalculatorWindow>
+        <CalculatorDisplay {...state}/>
+        <CalculatorButtons 
+          onReset={() => dispatch({ type: 'RESET' })} 
+          onBackspace={() => dispatch({ type: 'BACKSPACE' })} 
+          onAddNumber={(num: NumStr) => dispatch({ type: 'ADD_NUMBER', payload: num })} 
+          onAddOperator={ (op: OpStr) => dispatch({ type: 'ADD_OPERATOR', payload: op })}
+          onEnter={() => dispatch({ type: 'ENTER' })}
+        />
+      </CalculatorWindow>
     </div>
   );
 }
